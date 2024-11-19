@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Crimes Against Women in India: Data Analysis Project</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.0/ScrollTrigger.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap"
+        rel="stylesheet" />
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleUp {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: #000000;
+            color: #e0e0e0;
+            scroll-behavior: smooth;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        header {
+            background-image: url('https://d2kq0urxkarztv.cloudfront.net/6165487a73fdb50068eae2ea/3358446/upload-c3b2823b-0424-4bcc-b792-fa560b4518b4.jpg');
+            background-size: cover;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+            z-index: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        header:hover::before {
+            opacity: 0.9;
+        }
+
+        header * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .nav-link {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #ff4d4d;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        .image-section {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .image-section:hover {
+            transform: scale(1.02);
+        }
+
+        .image-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+            z-index: 1;
+            transition: opacity 0.4s ease;
+        }
+
+        .image-text-overlay {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .visible .image-text-overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .grid img {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: brightness(0.9) saturate(1.2);
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .grid img:hover {
+            transform: scale(1.05) translateY(-10px);
+            filter: brightness(1.1) saturate(1.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .highlights-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)),
+                url('https://d2kq0urxkarztv.cloudfront.net/6165487a73fdb50068eae2ea/3358446/upload-c3b2823b-0424-4bcc-b792-fa560b4518b4.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.4s ease;
+        }
+
+        .highlights-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .action-button {
+            background-color: transparent;
+            border: 2px solid #ff4d4d;
+            color: #ff4d4d;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #ff4d4d;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .action-button:hover {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.4);
+        }
+
+        .action-button:hover::before {
+            left: 0;
+        }
+
+        .scroll-in {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        footer {
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 1rem;
+            z-index: 50;
+        }
+
+        #mobile-menu.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .landing-content {
+                padding: 2rem;
+                margin: 1rem;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-roboto bg-cover bg-center">
+    <header class="py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <h1 class="text-3xl font-bold text-white hover:scale-105 transition-transform duration-300">Crimes Against
+                Women</h1>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a class="nav-link text-white" href="/index">Explore Data</a></li>
+                    <li>
+                        <a class="nav-link text-white" 
+                           href="https://github.com/Akansha260/CrimeAgainstWomenClassifier.git" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            Learn More
+                        </a>
+                    </li>
+                    
+                    <li><a class="nav-link text-white" href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <div id="mobile-menu" class="md:hidden">
+                <ul class="space-y-4">
+                    <li><a class="nav-link text-white block" href="/index">Explore Data</a></li>
+                    <li>
+                        <a class="nav-link text-white" 
+                           href="https://github.com/Akansha260/CrimeAgainstWomenClassifier.git" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            Learn More
+                        </a>
+                    </li>
+                    
+                    <li><a class="nav-link text-white block" href="#">Contact</a></li>
+                </ul>
+            </div>
+            <button class="text-white focus:outline-none md:hidden hover:scale-110 transition-transform duration-300"
+                id="menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto mt-8 p-4">
+        <section class="relative overflow-hidden rounded-xl w-full min-h-screen">
+            <div class="absolute inset-0">
+                <img src="{{ url_for('static', filename='images/landingphoto.webp') }}" alt="Background" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            </div>
+
+            <div
+                class="relative h-full min-h-screen px-4 py-12 sm:px-6 lg:px-8 flex flex-col justify-center items-center lg:items-end">
+                <div
+                    class="w-full max-w-lg bg-black bg-opacity-50 p-6 sm:p-8 rounded-xl backdrop-blur-md transform hover:scale-105 transition-transform duration-300 mx-auto lg:mx-0">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-white">
+                        Crimes Against Women in India: Data Analysis Project
+                    </h2>
+                    <p class="text-base sm:text-lg text-white leading-relaxed">
+                        This project aims to provide a comprehensive analysis of crimes against women in India. By
+                        exploring this data, visitors can gain insights into the prevalence and distribution of various
+                        crimes, understand the significance of the issue, and learn about the measures being taken to
+                        address it.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section id="scroll-image" class="image-section scroll-in rounded-xl my-16"
+            style="background-image:  url_for('static', filename='images/gallery1.png') ; background-position: center right;">
+            <div class="image-text-overlay p-8 rounded-xl">
+                <h2 class="text-3xl font-bold mb-4 text-white">
+                    Empowering Change
+                </h2>
+                <p class="text-lg leading-relaxed text-gray-200">
+                    Understanding the data is the first step towards addressing the challenges women face in our
+                    society.
+                    Join us in making a difference with informed action and analysis.
+                </p>
+            </div>
+        </section>
+        <div style="height: 50px;"></div>
+        <section id="highlights"
+            class="p-8 rounded-xl shadow-2xl highlights-section transform hover:scale-105 transition-all duration-300"
+            style="background-image:  url('https://d2kq0urxkarztv.cloudfront.net/6165487a73fdb50068eae2ea/3358446/upload-c3b2823b-0424-4bcc-b792-fa560b4518b4.jpg');">
+            <h3 class="text-2xl font-bold mb-6 text-white">
+                Highlights
+            </h3>
+            <ul class="list-disc list-inside mb-6 space-y-3 text-gray-200">
+                <li class="hover:translate-x-2 transition-transform duration-300">
+                    Key crime categories analyzed: Rape, Domestic Violence, Dowry Deaths, and more.
+                </li>
+                <li class="hover:translate-x-2 transition-transform duration-300">
+                    Top insights: Madhya Pradesh has the highest reported rape cases.
+                </li>
+            </ul>
+            <div class="flex space-x-6">
+                <a class="action-button py-3 px-6 rounded-lg text-lg font-semibold" href="/index">
+                    Explore Data
+                </a>
+                <a class="action-button py-3 px-6 rounded-lg text-lg font-semibold" href="https://github.com/Akansha260/CrimeAgainstWomenClassifier.git" 
+                target="_blank" 
+                rel="noopener noreferrer">
+                 Learn More
+             </a>
+            </div>
+        </section>
+        <div style="height: 50px;"></div>
+        <section class="p-8 rounded-xl shadow-2xl mb-8 fade-in transform hover:scale-105 transition-all duration-300">
+            <h3 class="text-2xl font-bold mb-6 text-white">
+                Photo Gallery
+            </h3>
+            <img alt="Map of India with crime heat zones and icons representing safety and justice"
+                class="w-full h-auto mb-8" height="200"
+                src="{{ url_for('static', filename='images/Indianmaprepresentation.jpeg') }}" width="600"
+                style="object-fit: cover; opacity: 0; animation: scaleUp 0.8s ease-out 0.4s forwards;" />
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                <img alt="Statistical representation"
+                    class="w-full rounded-xl hover:scale-110 transition-transform duration-500"
+                    src="{{ url_for('static', filename='images/gallery1.png') }}" />
+                <img alt="Data visualization"
+                    class="w-full rounded-xl hover:scale-110 transition-transform duration-500"
+                    src="{{ url_for('static', filename='images/gallery2.jpeg') }}" />
+                <img alt="Chart representation"
+                    class="w-full rounded-xl hover:scale-110 transition-transform duration-500"
+                    src="{{ url_for('static', filename='images/gallery3.png') }}" />
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-6 mt-8">
+        <div class="container mx-auto text-center">
+            <p>© 2024 Crimes Against Women in India. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('menu-button').addEventListener('click', function () {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('show');
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const imageSection = document.getElementById('scroll-image');
+            window.addEventListener('scroll', function () {
+                const elementTop = imageSection.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (elementTop < windowHeight - 100) {
+                    imageSection.classList.add('visible');
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('img').forEach(img => observer.observe(img));
+        });
+
+        document.addEventListener('click', function (event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuButton = document.getElementById('menu-button');
+
+            if (!mobileMenu.contains(event.target) && !menuButton.contains(event.target)) {
+                mobileMenu.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+
+</html>
